@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "fc1b8607-8c59-420b-a585-e647732a8676",
+		"name": "FinacPlus",
+		"description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49896686",
+		"_collection_link": "https://jayasree-sola-2644170.postman.co/workspace/Jayasree-Sola's-Workspace~07bb3e10-cb43-4257-869e-8f716e5524d2/collection/49896686-fc1b8607-8c59-420b-a585-e647732a8676?action=share&source=collection_link&creator=49896686"
+	},
+	"item": [
+		{
+			"name": "POST Create User",
+			"item": [
+				{
+					"name": "New User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 201 Created\", () => pm.response.to.have.status(201));\r",
+									"\r",
+									"const responseBody = pm.response.json();\r",
+									"\r",
+									"// Validate id exists and store for later\r",
+									"pm.expect(responseBody.id).to.exist;\r",
+									"pm.environment.set(\"userId\", responseBody.id);\r",
+									"\r",
+									"pm.test(\"ResponseBody fields Validation\", () => {\r",
+									"  pm.expect(responseBody.name).to.eql(pm.environment.get(\"newUserName\"));\r",
+									"  pm.expect(responseBody.job).to.eql(\"QA Engineer\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{newUserName}}\",\r\n  \"job\": \"QA Engineer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET User Details",
+			"item": [
+				{
+					"name": "User Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const code = pm.response.code;\r",
+									"\r",
+									"if (code === 200) {\r",
+									"  pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.data).to.be.an(\"object\");\r",
+									"} else if (code === 404) {\r",
+									"  pm.test(\"Expected 404 (non-persistent sandbox)\", () => pm.expect(code).to.eql(404));\r",
+									"} else {\r",
+									"  pm.test(\"Unexpected status\", () => pm.expect.fail(`Got ${code}`));\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/{{userId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PUT Update User",
+			"item": [
+				{
+					"name": "Update UserName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"const json = pm.response.json();\r",
+									"\r",
+									"pm.test(\"UpdatedName\", () => pm.expect(json.name).to.eql(pm.environment.get(\"updatedUserName\")));\r",
+									"pm.test(\"Job Name\", () => pm.expect(json.job).to.eql(\"QA Engineer\"));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{updatedUserName}}\",\r\n  \"job\": \"QA Engineer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/{{userId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"pm.request.headers.add({\r",
+					"    key: \"x-api-key\",\r",
+					"    value: pm.environment.get('x-api-key')\r",
+					"})\r",
+					"\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

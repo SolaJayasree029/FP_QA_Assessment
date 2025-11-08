@@ -1,0 +1,22 @@
+{
+  "name": "ui_assignment",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "DemoQA Book Store – Playwright (JS) with POM and HTML report",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "clean": "rimraf playwright-report test-results || true"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "dotenv": "^16.6.1",
+    "rimraf": "^6.0.1"
+  }
+}
